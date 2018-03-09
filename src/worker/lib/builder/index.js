@@ -62,7 +62,7 @@ export function buildWebsite(db, pageId) {
       }
       const pageInfo = pages[0]
 
-      db.collection('feed').find({ 'from.id': pageId }).toArray((err, posts) => {
+      db.collection('feed').find({ 'from.id': pageId }).sort({ createdTime: -1 }).toArray((err, posts) => {
         if (err) {
           throw new Error(`Unable to get feeds of page ${pageId} to build its website!`)
         }
