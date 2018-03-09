@@ -1,11 +1,19 @@
-import Koa from 'koa'
+import { openDb } from './lib/db'
+import { openMq, consume, produce } from './lib/mq'
 
-const app = new Koa()
-const port = process.env.PORT || 7002
+const interval = 60 * 1000
 
-app.use(ctx => {
-  ctx.body = 'Hello Worker!'
+Promise.all([
+  openDb(),
+  openMq(),
+]).then(conns => {
+  const [db, ch] = conns
+  console.log('Connections to DB and MQ established successfully!')
+
+  const loop = () => {
+    console.log('Looping')
+    setTimeout(() => loop(), interval)
+  }
+
+  loop()
 })
-
-app.listen(port)
-console.log(`Running worker on port ${port}`)
