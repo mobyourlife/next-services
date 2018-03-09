@@ -1,15 +1,16 @@
 import { openDb, getPages, storeObject } from './lib/db'
-import { openMq, consume, produce } from './lib/mq'
+// import { openMq, consume, produce } from './lib/mq'
 import { fetchPage, fetchFeed, batchRequest } from './lib/fb'
 
 const interval = 30 * 60 * 1000
 
 Promise.all([
   openDb(),
-  openMq(),
+  // openMq(),
 ]).then(conns => {
-  const [db, ch] = conns
-  console.log('Connections to DB and MQ established successfully!')
+  const [db/*, ch*/] = conns
+  // console.log('Connections to DB and MQ established successfully!')
+  console.log('Connection to DB established successfully!')
 
   const loop = () => {
     console.log('Looping')
