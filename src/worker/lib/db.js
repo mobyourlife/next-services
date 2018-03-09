@@ -22,7 +22,7 @@ export function getPages(db) {
         throw new Error(`Unable to get pages from database! ${err}`)
       }
 
-      const pages = docs.map(i => i.pageId)
+      const pages = docs.map(i => i._id)
       resolve(pages)
     })
   })
@@ -32,13 +32,15 @@ export function storeObject(db, obj) {
   if (obj.fan_count) {
     return storePage(db, obj)
   }
-  console.log('Unrecognised object, anything was stored!')
+  if (obj.data && obj.data.length) {
+    return storeArray(db, obj.data)
+  }
 }
 
 function storePage(db, page) {
   return new Promise(resolve => {
     db.collection('pages').update({
-      pageId: page.id
+      _id: page.id
     }, {
       $set: {
         about: page.about,
@@ -68,6 +70,57 @@ function storePage(db, page) {
         throw new Error(`Unable to update page ${page.id} on database!`)
       }
       console.log(`Updated page ${page.id} on database!`)
+      resolve({})
+    })
+  })
+}
+
+function storeArray(db, list) {
+  const items = list.map(i => {
+    if (i.type) {
+      return storeFeed(db, i)
+    }
+    return null
+  }).filter(i => !!i)
+
+  return items
+}
+
+function storeFeed(db, feed) {
+  return new Promise(resolve => {
+    db.collection('feed').update({
+      _id: feed.id
+    }, {
+      $set: {
+        caption: feed.caption,
+        createdTime: feed.created_time,
+        description: feed.description,
+        from: feed.from,
+        fullPicture: feed.full_picture,
+        isHidden: feed.is_hidden,
+        isPublished: feed.is_published,
+        link: feed.link,
+        message: feed.message,
+        messageTags: feed.message_tags,
+        name: feed.name,
+        objectId: feed.object_id,
+        parentId: feed.parent_id,
+        permalinkUrl: feed.permalink_url,
+        picture: feed.picture,
+        properties: feed.properties,
+        source: feed.source,
+        statusType: feed.status_type,
+        story: feed.story,
+        type: feed.type,
+        updatedTime: feed.updated_time
+      }
+    }, {
+      upsert: true
+    }, err => {
+      if (err) {
+        throw new Error(`Unable to update feed ${feed.id} on database!`)
+      }
+      console.log(`Updated feed ${feed.id} on database!`)
       resolve({})
     })
   })

@@ -36,12 +36,34 @@ export function fetchPage(pageId) {
   }
 }
 
-export function fetchPhotos(pageId) {
-
-}
-
 export function fetchFeed(pageId) {
-
+  return {
+    endpoint: `${pageId}/feed`,
+    fields: [
+      'id',
+      'caption',
+      'created_time',
+      'description',
+      'from',
+      'full_picture',
+      'is_hidden',
+      'is_published',
+      'link',
+      'message',
+      'message_tags',
+      'name',
+      'object_id',
+      'parent_id',
+      'permalink_url',
+      'picture',
+      'properties',
+      'source',
+      'status_type',
+      'story',
+      'type',
+      'updated_time'
+    ]
+  }
 }
 
 export function batchRequest(data) {

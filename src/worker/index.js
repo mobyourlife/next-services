@@ -1,6 +1,6 @@
 import { openDb, getPages, storeObject } from './lib/db'
 import { openMq, consume, produce } from './lib/mq'
-import { fetchPage, fetchPhotos, fetchFeed, batchRequest } from './lib/fb'
+import { fetchPage, fetchFeed, batchRequest } from './lib/fb'
 
 const interval = 30 * 60 * 1000
 
@@ -17,7 +17,6 @@ Promise.all([
     getPages(db).then(pages => {
       const requests = pages.map(pageId => [
         fetchPage(pageId),
-        fetchPhotos(pageId),
         fetchFeed(pageId),
       ])
 
