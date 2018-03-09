@@ -78,6 +78,12 @@ export function buildWebsite(db, pageId) {
 
         fs.writeFileSync(`${dir}/index.html`, html)
 
+        if (process.env.NODE_ENV !== 'production') {
+          console.log(`Skipped publishing website for page ${pageId}.`)
+          resolve({})
+          return
+        }
+
         const cmd = `node`
         const args = ['node_modules/surge/lib/cli.js', '--project', '_build', '--domain', pageInfo.domainName]
         const child = spawn(cmd, args)
