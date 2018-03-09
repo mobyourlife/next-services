@@ -12,5 +12,15 @@
   },
   "author": "Filipe Oliveira <contato@fmoliveira.com.br>",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/mobyourlife/mobie-services#readme"
+  "homepage": "https://bitbucket.org/mobyourlife/mobie-services#readme",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
+    "koa": "^2.5.0"
+  },
+  "devDependencies": {
+    "dotenv": "^5.0.1",
+    "nodemon": "^1.17.1"
+  }
 }
